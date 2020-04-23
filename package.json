@@ -1,9 +1,9 @@
 {
   "name": "@coreui/coreui-free-react-admin-template",
   "version": "2.6.0",
-  "description": "CoreUI React Open Source Bootstrap 4 Admin Template",
-  "author": "Łukasz Holeczek",
-  "homepage": "https://coreui.io",
+  "description": "Bizu - Candidatos um dia Bloqueados",
+  "author": "cassundé",
+  "homepage": ".",
   "copyright": "Copyright 2017-2019 creativeLabs Łukasz Holeczek",
   "license": "MIT",
   "private": true,
@@ -38,6 +38,7 @@
     "simple-line-icons": "^2.4.1"
   },
   "devDependencies": {
+    "gh-pages": "^2.2.0",
     "react-scripts": "^3.0.1"
   },
   "scripts": {
