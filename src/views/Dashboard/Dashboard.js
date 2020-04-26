@@ -10,7 +10,8 @@ import {
   Label,
   Input,
   Button,
-  Jumbotron
+  Jumbotron,
+  Spinner
 } from 'reactstrap';
 
 class Dashboard extends Component {
@@ -26,7 +27,8 @@ class Dashboard extends Component {
       persons:[],
       nomeCandidato:"",
       nomeMunicipio:"",
-      anoEleicao:""
+      anoEleicao:"",
+      showLoad:"none"
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -39,19 +41,17 @@ class Dashboard extends Component {
 
   request = async () => {
 
+    this.setState({ showLoad:"inline-block" });      
     var anoELeicaoTratado = this.state.anoEleicao;
     if(anoELeicaoTratado === undefined || anoELeicaoTratado === ""){
       anoELeicaoTratado = "0";
     }
-    console.log("ano");
-    
-    console.log(anoELeicaoTratado);
-    
-
+        
     await axios.get(`https://api-bizu.herokuapp.com/coleta/candidaturas?nomeMunicipio=${this.state.nomeMunicipio}&nomeCandidato=${this.state.nomeCandidato}&anoEleicao=${anoELeicaoTratado}`)
     .then(res => {
       const persons = res.data;
-      this.setState({ persons });
+      this.setState({ persons });      
+      this.setState({ showLoad:"none" });      
     })      
     console.log(this.state);
   }  
@@ -153,6 +153,7 @@ class Dashboard extends Component {
                   <hr></hr>
                   <Button type="submit" size="sm" color="primary"><i className="fa fa-dot-circle-o"></i> Filtrar</Button>
                 </Form>
+                <Spinner color="danger" style={{display: this.state.showLoad, position: "relative",left: "50%" }} />
               </CardBody>
             </Card>
           </Col>        
