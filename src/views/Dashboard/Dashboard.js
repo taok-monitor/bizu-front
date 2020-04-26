@@ -111,7 +111,7 @@ class Dashboard extends Component {
               <CardBody>
                 <Jumbotron>
                   <h1 className="display-3">BIZU</h1>
-                  <p className="lead">Conheça todos os candidatos que um dia foram bloqueados pela Justiça Eleitoral.</p>
+                  <p className="lead">Conheça todos os candidatos que um dia foram bloqueados pela Justiça Eleitoral no Estado do Ceará</p>
                   <hr className="my-2" />
                   <p>Dados coletados do portal da transparência do TSE.</p>                                    
                 </Jumbotron>
