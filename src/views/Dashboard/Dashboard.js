@@ -14,6 +14,8 @@ import {
   Spinner
 } from 'reactstrap';
 
+import {Typeahead} from 'react-bootstrap-typeahead'; 
+
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -25,8 +27,10 @@ class Dashboard extends Component {
       dropdownOpen: false,
       radioSelected: 2,
       persons:[],
+      municipios:[],
       nomeCandidato:"",
       nomeMunicipio:"",
+      cargo: "",
       anoEleicao:"",
       showLoad:"none"
     };
@@ -47,11 +51,17 @@ class Dashboard extends Component {
       anoELeicaoTratado = "0";
     }
         
-    await axios.get(`https://api-bizu.herokuapp.com/coleta/candidaturas?nomeMunicipio=${this.state.nomeMunicipio}&nomeCandidato=${this.state.nomeCandidato}&anoEleicao=${anoELeicaoTratado}`)
+    await axios.get(`https://api-bizu.herokuapp.com/coleta/candidaturas?nomeMunicipio=${this.state.nomeMunicipio}&nomeCandidato=${this.state.nomeCandidato}&anoEleicao=${anoELeicaoTratado}&cargo=${this.state.cargo}`)
     .then(res => {
       const persons = res.data;
       this.setState({ persons });      
       this.setState({ showLoad:"none" });      
+    })      
+
+    await axios.get(`https://api-bizu.herokuapp.com/coleta/municipios`)
+    .then(res => {
+      const municipios = res.data;
+      this.setState({ municipios });
     })      
     console.log(this.state);
   }  
@@ -128,27 +138,43 @@ class Dashboard extends Component {
               <CardBody>
                 <Form onSubmit={this.handleSubmit} >
                   <Row>
-                    <Col md="4" >
+                    <Col md="3" >
                       <Label htmlFor="municipio">Municipio</Label>
-                      <Input type="text" id="municipio" placeholder="nome do Município"                    
-                        value={this.state.nomeMunicipio} 
-                        onChange={this.handleChange}
-                      />
+                      <Typeahead
+                        id="municipio"
+                        placeholder="Selecione um município"
+                        onChange={(selected) => {
+                          this.setState({nomeMunicipio : selected })
+                        }}
+                        options={this.state.municipios}
+                      />                      
                     </Col>
-                    <Col md="4">
+                    <Col md="3" >
+                      <Label htmlFor="municipio">Cargo</Label>
+                      <Typeahead
+                        id="cargo"
+                        placeholder="Selecione um cargo"
+                        onChange={(selected) => {
+                          this.setState({cargo : selected })
+                        }}
+                        options={['PREFEITO','VEREADOR','GOVERNADOR','SENADOR','DEPUTADO FEDERAL','DEPUTADO ESTADUAL']}
+                      />                      
+                    </Col>
+                    <Col md="3">
                       <Label htmlFor="candidato">Candidato</Label>
                       <Input type="text" id="candidato" placeholder="nome do Candidato"                    
                         value={this.state.nomeCandidato} 
                         onChange={this.handleChangeCandidato}
                       />
                     </Col>
-                    <Col md="4">
+                    <Col md="3">
                       <Label htmlFor="anoEleicao">Ano da Eleição  </Label>
                       <Input type="text" id="anoEleicao" placeholder="Ano da Eleicao"                    
                         value={this.state.anoEleicao} 
                         onChange={this.handleChangeAnoEleicao}
                       />
-                    </Col>
+                    </Col>                    
+                    
                   </Row>                                    
                   <hr></hr>
                   <Button type="submit" size="sm" color="primary"><i className="fa fa-dot-circle-o"></i> Filtrar</Button>
